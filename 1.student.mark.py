@@ -1,83 +1,83 @@
 from datetime import datetime
 
-def getStudentCount ():
-    return int (input ("Enter student's number: "))
+def CountStudents():
+    return int(input("How many students?: "))
     
-def getStudentDetails ():
-    studentid = input ("Enter student id: ")
-    studentname = input ("Enter student name: ")
+def DetailStudents():
+    studentid = input("Input student's ID: ")
+    studentname = input("Input student's name: ")
     while True:
         try:
-            sdob = input ("Enter student's date of birth dd/mm/yyyy: ")
-            dob = datetime.strptime(sdob, "%d/%m/%Y")
+            studentdob = input("Enter student's date of birth dd/mm/yyyy: ")
+            dob = datetime.strptime(studentdob, "%d/%m/%Y")
         except ValueError:
             print("Wrong date of birth format!")
             continue
         break
-    dobs = str(dob.day) + "/" + str(dob.month) + "/" + str(dob.year)
-    return studentid, studentname, dobs
+    dobformat = f"{dob.day}/{dob.month}/{dob.year}"
+    return studentid, studentname, dobformat
     
-def getCourseCount ():
-    return int (input ("Enter number of courses: "))
+def CountCourses():
+    return int(input("How many courses?: "))
     
-def getCourseDetails ():
-    courseid = input ("Enter course id: ")
-    coursename = input ("Enter course name: ")
+def DetailCourses():
+    courseid = input("Input course's ID: ")
+    coursename = input("Input course's name: ")
     return courseid, coursename
     
-numStudents = getStudentCount ()
+numStudents = CountStudents()
 studentList = []
-for i in range (numStudents):
-    id, name, dob = getStudentDetails ()
-    studentList.append ((id, name, dob))
+for i in range(numStudents):
+    id, name, dob = DetailStudents()
+    studentList.append((id, name, dob))
     studentList.sort() 
 
-print ("\nListing all students now..")
+print ("\nAll students list:")
 for s in studentList:
-    print (f"Student id: {s[0]} -- Name: {s[1]} -- Date of birth: {s[2]}")
+    print (f"Student ID: {s[0]} -- Student Name: {s[1]} -- Date of birth: {s[2]}")
 
-numCourses = getCourseCount ()
+numCourses = CountCourses()
 courseList = []
-for i in range (numCourses):
-    cid, cname = getCourseDetails ()
-    courseList.append ((cid, cname))
+for i in range(numCourses):
+    id, name = DetailCourses()
+    courseList.append ((id, name))
     courseList.sort() 
     
-lib = {}
+smlib = {}
 while True:
-    n = int (input ("Enter how many student-course marks do you want to enter? "))
-    if n < 0 or n > numStudents * numCourses:
-        print("student-course marks is not available, re-enter please")
+    numCmark = int(input("How many student's course marks do you want to enter? "))
+    if numCmark < 0 or numCmark > numStudents * numCourses:
+        print("Student's course marks is not available, re-enter please!")
         continue
     break 
-for i in range (n):
+for i in range(numCmark):
     while True:
-        sid = input ("Enter student id: ")
-        cid = input ("Enter course id: ")
-        if sid not in [student [0] for student in studentList]:
-            print ("Invalid student id")
+        studentid = input("Input student's ID: ")
+        courseid = input("Input course's ID: ")
+        if studentid not in [student[0] for student in studentList]:
+            print ("Invalid student's ID")
             continue 
-        if cid not in [course [0] for course in courseList]:
-            print ("Invalid course id")
+        if courseid not in [course[0] for course in courseList]:
+            print ("Invalid course's ID")
             continue 
         break
 
-    marks = float (input ("Enter marks: "))
+    mark = float(input("Input mark: "))
             
-    if cid in lib:
-        lib [cid].append ((sid, marks))
+    if courseid in smlib:
+        smlib[courseid].append((studentid, mark))
     else:
-        lib [cid] = [(sid, marks)]
+        smlib[courseid] = [(studentid, mark)]
 
-print ("\nListing all courses now..")
+print("\nAll courses list:")
 for c in courseList:
-    print (f"Course id: {c[0]} Name: {c[1]}")
+    print(f"Course ID: {c[0]} -- Course Name: {c[1]}")
 
 while True:
-    cid = input ("\nWhich course do you want to see all student marks for? ")
-    if cid in lib:
-        for l in lib [cid]:
-            print (f"Student {l[0]} got {l[1]} marks")
+    cidmark = input("\nWhich course do you want to see all student marks for? ")
+    if cidmark in smlib:
+        for l in smlib[cidmark]:
+            print(f"Student {l[0]} got {l[1]} marks")
     else:
         print("No course like that lmao")
         continue
